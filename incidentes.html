@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incidentes - AutoMarket Perú</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="navbar/navbar.css">
-    <link rel="stylesheet" href="footer.css">
     <link rel="stylesheet" href="incidentes.css">
 </head>
 <body>
@@ -15,15 +13,9 @@
         <div class="logo">AutoMarket</div>
         <ul class="nav-links">
             <li><a href="index.html">Inicio</a></li>
-            <li><a href="index.html#">Explorar</a></li>
-            <li><a href="index.html#">Comprar</a></li>
-            <li><a href="index.html#">Vender</a></li>
+            <li><a href="index.html#catalogo">Catálogo</a></li>
             <li><a href="incidentes.html" class="active">Incidentes</a></li>
         </ul>
-        <div class="search-box">
-            <input type="text" placeholder="Buscar incidentes...">
-            <button>🔍</button>
-        </div>
         <div class="nav-actions">
             <a href="Login-register/login.html" class="login">Iniciar sesión</a>
         </div>
@@ -31,8 +23,10 @@
 
     <main class="incidentes-main">
         <div class="incidentes-header">
-            <h1>Sistema de Seguimiento de Incidentes</h1>
-            <p>Registro y control de errores, mejoras y reportes del sistema AutoMarket Perú</p>
+            <div class="header-left">
+                <h1>Sistema de Seguimiento de Incidentes</h1>
+                <p>Registro y control de errores, mejoras y reportes del sistema</p>
+            </div>
             <button class="btn-nuevo" onclick="abrirModal()">+ Nuevo Incidente</button>
         </div>
 
@@ -40,7 +34,7 @@
             <select id="filtro-estado" onchange="cargarIncidentes()">
                 <option value="">Todos los estados</option>
                 <option value="abierto">Abierto</option>
-                <option value="en_progreso">En Progreso</option>
+                <option value="en progreso">En Progreso</option>
                 <option value="resuelto">Resuelto</option>
                 <option value="cerrado">Cerrado</option>
             </select>
@@ -95,96 +89,129 @@
                 <tbody id="tabla-body">
                 </tbody>
             </table>
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-icon">📋</div>
+                <h3>No hay incidentes registrados</h3>
+                <p>Usa el botón "+ Nuevo Incidente" para reportar el primero.</p>
+            </div>
+            <div id="loading-state" class="loading">
+                <div class="spinner"></div>
+                <p>Cargando incidentes...</p>
+            </div>
         </div>
     </main>
 
     <div id="modal" class="modal hidden">
         <div class="modal-content">
             <span class="cerrar" onclick="cerrarModal()">&times;</span>
-            <h2>Reportar Incidente</h2>
+            <h2 id="modal-titulo">Reportar Incidente</h2>
             <form id="form-incidente">
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" required>
-
-                <label for="descripcion">Descripción</label>
-                <textarea id="descripcion" rows="3"></textarea>
-
-                <label for="categoria">Categoría</label>
-                <select id="categoria">
-                    <option value="incidente">Incidente</option>
-                    <option value="bug">Bug</option>
-                    <option value="mejora">Mejora</option>
-                </select>
-
-                <label for="prioridad">Prioridad</label>
-                <select id="prioridad">
-                    <option value="baja">Baja</option>
-                    <option value="media" selected>Media</option>
-                    <option value="alta">Alta</option>
-                    <option value="critica">Crítica</option>
-                </select>
-
-                <label for="creado_por">Reportado por</label>
-                <input type="text" id="creado_por" placeholder="Tu nombre">
-
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input type="text" id="titulo" placeholder="Describe el incidente brevemente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" rows="3" placeholder="Detalles del incidente..."></textarea>
+                    </div>
+                    <div class="form-group half">
+                        <div>
+                            <label for="categoria">Categoría</label>
+                            <select id="categoria">
+                                <option value="incidente">Incidente</option>
+                                <option value="bug">Bug</option>
+                                <option value="mejora">Mejora</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="prioridad">Prioridad</label>
+                            <select id="prioridad">
+                                <option value="baja">Baja</option>
+                                <option value="media" selected>Media</option>
+                                <option value="alta">Alta</option>
+                                <option value="critica">Crítica</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="creado_por">Reportado por</label>
+                        <input type="text" id="creado_por" placeholder="Tu nombre">
+                    </div>
+                </div>
                 <button type="submit">Enviar Reporte</button>
             </form>
         </div>
     </div>
 
-    <footer>
-        <h3>Venta de Autos</h3>
-        <p>&copy; 2026 Todos los derechos reservados</p>
-        <div class="footer-links">
-            <a href="index.html">Inicio</a>
-            <a href="incidentes.html">Incidentes</a>
-            <a href="#">Contacto</a>
-        </div>
-    </footer>
-
     <script>
         const API = 'https://herramientas-de-desarrollo-practica.onrender.com/api/incidentes';
         let editandoId = null;
+
+        function mostrarLoading(mostrar) {
+            document.getElementById('loading-state').classList.toggle('hidden', !mostrar);
+        }
+
+        function mostrarEmpty(data) {
+            const empty = document.getElementById('empty-state');
+            if (data.length === 0) {
+                empty.classList.remove('hidden');
+            } else {
+                empty.classList.add('hidden');
+            }
+        }
 
         function cargarIncidentes() {
             const estado = document.getElementById('filtro-estado').value;
             const categoria = document.getElementById('filtro-categoria').value;
             const prioridad = document.getElementById('filtro-prioridad').value;
 
+            mostrarLoading(true);
+            const tbody = document.getElementById('tabla-body');
+            tbody.innerHTML = '';
+
             fetch(API)
                 .then(r => r.json())
                 .then(data => {
                     let filtrados = data;
+                    if (estado) filtrados = filtrados.filter(i => i.estado.toLowerCase() === estado.toLowerCase());
+                    if (categoria) filtrados = filtrados.filter(i => i.categoria.toLowerCase() === categoria.toLowerCase());
+                    if (prioridad) filtrados = filtrados.filter(i => i.prioridad.toLowerCase() === prioridad.toLowerCase());
 
-                    if (estado) filtrados = filtrados.filter(i => i.estado === estado);
-                    if (categoria) filtrados = filtrados.filter(i => i.categoria === categoria);
-                    if (prioridad) filtrados = filtrados.filter(i => i.prioridad === prioridad);
+                    mostrarLoading(false);
+                    mostrarEmpty(filtrados);
 
-                    const tbody = document.getElementById('tabla-body');
-                    tbody.innerHTML = filtrados.map(i => `
-                        <tr>
-                            <td>#${i.id}</td>
-                            <td>${i.titulo}</td>
-                            <td><span class="badge badge-${i.categoria}">${i.categoria}</span></td>
-                            <td><span class="badge badge-p-${i.prioridad}">${i.prioridad}</span></td>
-                            <td><span class="badge badge-e-${i.estado}">${i.estado.replace('_', ' ')}</span></td>
+                    tbody.innerHTML = filtrados.map(i => {
+                        const estadoKey = i.estado.replace(/\s+/g, '_').toLowerCase();
+                        return `<tr>
+                            <td><span class="id-col">#${i.id}</span></td>
+                            <td class="titulo-col">${i.titulo}</td>
+                            <td><span class="badge badge-${i.categoria.toLowerCase()}">${i.categoria}</span></td>
+                            <td><span class="badge badge-p-${i.prioridad.toLowerCase()}">${i.prioridad}</span></td>
+                            <td><span class="badge badge-e-${estadoKey}">${i.estado}</span></td>
                             <td>${i.creado_por}</td>
-                            <td>${new Date(i.fecha_creacion).toLocaleDateString()}</td>
+                            <td>${new Date(i.fecha_creacion).toLocaleDateString('es-PE')}</td>
                             <td class="acciones">
-                                <button class="btn-accion editar" onclick="editarIncidente(${i.id})">✏️</button>
-                                <button class="btn-accion eliminar" onclick="eliminarIncidente(${i.id})">🗑️</button>
+                                <button class="btn-accion editar" onclick="editarIncidente(${i.id})" title="Editar">✏️</button>
+                                <button class="btn-accion eliminar" onclick="eliminarIncidente(${i.id})" title="Eliminar">🗑️</button>
                             </td>
-                        </tr>
-                    `).join('');
+                        </tr>`;
+                    }).join('');
 
                     actualizarResumen(data);
+                })
+                .catch(() => {
+                    mostrarLoading(false);
+                    document.getElementById('loading-state').innerHTML = `
+                        <p style="color:#ef4444;">Error al conectar con el servidor. Verifica que el backend esté activo.</p>
+                    `;
                 });
         }
 
         function actualizarResumen(data) {
-            document.getElementById('count-abiertos').textContent = data.filter(i => i.estado === 'abierto').length;
-            document.getElementById('count-progreso').textContent = data.filter(i => i.estado === 'en_progreso').length;
-            document.getElementById('count-resueltos').textContent = data.filter(i => i.estado === 'resuelto' || i.estado === 'cerrado').length;
+            document.getElementById('count-abiertos').textContent = data.filter(i => i.estado.toLowerCase() === 'abierto').length;
+            document.getElementById('count-progreso').textContent = data.filter(i => i.estado.toLowerCase() === 'en progreso').length;
+            document.getElementById('count-resueltos').textContent = data.filter(i => i.estado.toLowerCase() === 'resuelto' || i.estado.toLowerCase() === 'cerrado').length;
             document.getElementById('count-total').textContent = data.length;
         }
 
@@ -192,7 +219,7 @@
             editandoId = null;
             document.getElementById('form-incidente').reset();
             document.getElementById('modal').classList.remove('hidden');
-            document.querySelector('#modal h2').textContent = 'Reportar Incidente';
+            document.getElementById('modal-titulo').textContent = 'Reportar Incidente';
         }
 
         function cerrarModal() {
@@ -210,7 +237,7 @@
                     document.getElementById('prioridad').value = i.prioridad;
                     document.getElementById('creado_por').value = i.creado_por;
                     document.getElementById('modal').classList.remove('hidden');
-                    document.querySelector('#modal h2').textContent = 'Editar Incidente';
+                    document.getElementById('modal-titulo').textContent = 'Editar Incidente #' + i.id;
                 });
         }
 
@@ -242,6 +269,10 @@
                 cerrarModal();
                 cargarIncidentes();
             });
+        });
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) cerrarModal();
         });
 
         cargarIncidentes();
