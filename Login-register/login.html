@@ -32,10 +32,6 @@
     </div>
 
     <script>
-        // Credenciales de muestra
-        const USER_AUTH = "admin";
-        const PASS_AUTH = "12345";
-
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -43,11 +39,16 @@
             const pass = document.getElementById('password').value;
             const message = document.getElementById('message');
 
-            if (user === USER_AUTH && pass === PASS_AUTH) {
+            // Verificar credenciales
+            const registered = JSON.parse(localStorage.getItem('usuario_registrado'));
+            const validUser = (user === "admin" && pass === "12345") ||
+                              (registered && (user === registered.email || user === registered.name) && pass === registered.password);
+
+            if (validUser) {
                 message.style.color = "#2ecc71";
                 message.textContent = "Acceso concedido. Redirigiendo...";
                 setTimeout(() => {
-                    window.location.href = "../index.html"; // Redirige al inicio
+                    window.location.href = "../index.html";
                 }, 1500);
             } else {
                 message.style.color = "#e74c3c";

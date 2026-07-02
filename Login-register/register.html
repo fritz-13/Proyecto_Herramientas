@@ -41,13 +41,20 @@
             e.preventDefault();
             const message = document.getElementById('reg-message');
             
-            // Simulación visual de éxito
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+
+            // Guardar usuario en localStorage
+            const usuario = { name, email, password };
+            localStorage.setItem('usuario_registrado', JSON.stringify(usuario));
+            
             message.style.color = "#2ecc71";
-            message.textContent = "¡Cuenta creada! Redirigiendo al login...";
+            message.textContent = "¡Cuenta creada! Redirigiendo al menú principal...";
             
             setTimeout(() => {
-                window.location.href = "login.html";
-            }, 2000);
+                window.location.href = "../index.html";
+            }, 1500);
         });
     </script>
 </body>
