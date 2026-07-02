@@ -1,0 +1,50 @@
+[
+  {
+    "url": "http://localhost:8080/index.html",
+    "isRepresentativeRun": true,
+    "htmlPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-index_html-2026_07_02_23_03_45.report.html",
+    "jsonPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-index_html-2026_07_02_23_03_45.report.json",
+    "summary": {
+      "performance": 0.88,
+      "accessibility": 1,
+      "best-practices": 0.75,
+      "seo": 0.91
+    }
+  },
+  {
+    "url": "http://localhost:8080/Login-register/login.html",
+    "isRepresentativeRun": true,
+    "htmlPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-Login_register_login_html-2026_07_02_23_04_14.report.html",
+    "jsonPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-Login_register_login_html-2026_07_02_23_04_14.report.json",
+    "summary": {
+      "performance": 0.94,
+      "accessibility": 0.92,
+      "best-practices": 0.96,
+      "seo": 0.9
+    }
+  },
+  {
+    "url": "http://localhost:8080/Login-register/register.html",
+    "isRepresentativeRun": true,
+    "htmlPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-Login_register_register_html-2026_07_02_23_04_34.report.html",
+    "jsonPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-Login_register_register_html-2026_07_02_23_04_34.report.json",
+    "summary": {
+      "performance": 0.99,
+      "accessibility": 0.92,
+      "best-practices": 0.96,
+      "seo": 0.9
+    }
+  },
+  {
+    "url": "http://localhost:8080/incidentes.html",
+    "isRepresentativeRun": true,
+    "htmlPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-incidentes_html-2026_07_02_23_04_55.report.html",
+    "jsonPath": "C:\\Users\\fritz\\OneDrive\\Desktop\\UTP\\HERRAMIENTA DE DESARROLLO\\avanze 2\\Proyecto_Herramientas\\.lighthouseci\\localhost-incidentes_html-2026_07_02_23_04_55.report.json",
+    "summary": {
+      "performance": 0.74,
+      "accessibility": 0.84,
+      "best-practices": 0.96,
+      "seo": 0.9
+    }
+  }
+]
