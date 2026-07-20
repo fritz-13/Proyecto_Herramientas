@@ -1,0 +1,11 @@
+.git
+.github
+.lighthouseci
+*.md
+*.docx
+*.pptx
+render.yaml
+lighthouse-report.html
+Roadmap
+opencode
+cd

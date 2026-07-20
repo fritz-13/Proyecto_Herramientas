@@ -28,9 +28,42 @@ jobs:
             --collect.settings.onlyCategories=performance,accessibility,best-practices,seo \
             --assert.preset=lighthouse:no-pwa || true
 
+      - name: Extract screenshots from Lighthouse reports
+        if: always()
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const src = '.lighthouseci';
+          const out = 'lighthouse-screenshots';
+          if (!fs.existsSync(out)) fs.mkdirSync(out);
+          const files = fs.readdirSync(src).filter(f =>
+            f.endsWith('.json') && !f.includes('manifest') && !f.includes('assertion')
+          );
+          files.forEach(file => {
+            const report = JSON.parse(fs.readFileSync(path.join(src, file), 'utf8'));
+            const ss = report.audits && report.audits['full-page-screenshot'];
+            if (ss && ss.details && ss.details.screenshot) {
+              const buf = Buffer.from(ss.details.screenshot.data, 'base64');
+              const name = file.replace(/\.(report\.)?json$/, '') + '.png';
+              fs.writeFileSync(path.join(out, name), buf);
+              console.log('Saved screenshot: ' + name);
+            } else {
+              console.log('No screenshot found in: ' + file);
+            }
+          });
+          "
+
       - name: Upload Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-reports
           path: .lighthouseci/
+
+      - name: Upload Lighthouse screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-screenshots
+          path: lighthouse-screenshots/

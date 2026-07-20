@@ -58,6 +58,11 @@ body {
     color: #fff;
 }
 
+.nav-links a.active {
+    color: #00f7ff;
+    text-shadow: 0 0 8px #00f7ff;
+}
+
 /* 3. BUSCADOR: En el centro */
 .search-box {
     display: flex;

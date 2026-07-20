@@ -10,7 +10,15 @@
       ],
       "numberOfRuns": 1,
       "settings": {
-        "chromeFlags": "--no-sandbox --headless"
+        "chromeFlags": "--no-sandbox --headless",
+        "output": ["json", "html"],
+        "formFactor": "desktop",
+        "screenEmulation": {
+          "width": 1920,
+          "height": 1080,
+          "deviceScaleRatio": 1,
+          "mobile": false
+        }
       }
     },
     "assert": {
