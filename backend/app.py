@@ -129,6 +129,16 @@ def eliminar_incidente(id):
     return jsonify({"mensaje": "Incidente eliminado"}), 200
 
 
+@app.route("/api/status", methods=["GET"])
+def status():
+    return jsonify({
+        "mensaje": "Hola desde el CONTENEDOR Backend!",
+        "contenedor": "backend-flask",
+        "puerto": 5000,
+        "estado": "funcionando"
+    })
+
+
 if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 5000))

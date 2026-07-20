@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Contenedores Docker</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .contenedor { border: 2px solid #333; padding: 20px; margin: 10px 0; border-radius: 8px; }
+        .frontend { background: #e3f2fd; border-color: #2196f3; }
+        .backend { background: #e8f5e9; border-color: #4caf50; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2196f3; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #1976d2; }
+        #resultado { margin-top: 20px; padding: 15px; background: #fff3e0; border-radius: 5px; }
+        h1 { text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Demo: Comunicación entre Contenedores</h1>
+    
+    <div class="contenedor frontend">
+        <h2>CONTENEDOR 1: Frontend (Nginx)</h2>
+        <p>Puerto: 80 | Sirve las páginas HTML/CSS/JS</p>
+        <p><strong>Este HTML está siendo servido por este contenedor</strong></p>
+    </div>
+    
+    <div class="contenedor backend">
+        <h2>CONTENEDOR 2: Backend (Flask)</h2>
+        <p>Puerto: 5000 | Maneja la API y base de datos</p>
+        <p><strong>Haz clic para pedir datos al otro contenedor:</strong></p>
+        <button onclick="consultarBackend()">Consultar Backend</button>
+    </div>
+    
+    <div id="resultado">
+        <h3>Respuesta del Backend:</h3>
+        <p><em>Haz clic en el botón...</em></p>
+    </div>
+
+    <script>
+        async function consultarBackend() {
+            document.getElementById('resultado').innerHTML = '<h3>Respuesta del Backend:</h3><p>Conectando...</p>';
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                document.getElementById('resultado').innerHTML = `
+                    <h3>Respuesta del Backend:</h3>
+                    <p><strong>Mensaje:</strong> ${data.mensaje}</p>
+                    <p><strong>Contenedor:</strong> ${data.contenedor}</p>
+                    <p><strong>Puerto:</strong> ${data.puerto}</p>
+                    <p><strong>Estado:</strong> ${data.estado}</p>
+                `;
+            } catch (e) {
+                document.getElementById('resultado').innerHTML = '<h3>Error:</h3><p>No se pudo conectar al backend</p>';
+            }
+        }
+    </script>
+</body>
+</html>
