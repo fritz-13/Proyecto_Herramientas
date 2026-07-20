@@ -39,7 +39,7 @@
         async function consultarBackend() {
             document.getElementById('resultado').innerHTML = '<h3>Respuesta del Backend:</h3><p>Conectando...</p>';
             try {
-                const res = await fetch('/api/status');
+                const res = await fetch('https://herramientas-de-desarrollo-practica.onrender.com/api/status');
                 const data = await res.json();
                 document.getElementById('resultado').innerHTML = `
                     <h3>Respuesta del Backend:</h3>
