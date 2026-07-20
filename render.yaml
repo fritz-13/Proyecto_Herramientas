@@ -1,5 +1,16 @@
 services:
   - type: web
+    name: automarket-frontend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    ports:
+      - port: 80
+    envVars:
+      - key: NGINX_CONF
+        value: nginx.conf
+
+  - type: web
     name: automarket-backend
     env: python
     buildCommand: pip install -r backend/requirements.txt

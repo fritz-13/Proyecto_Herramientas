@@ -8,49 +8,82 @@
         .contenedor { border: 2px solid #333; padding: 20px; margin: 10px 0; border-radius: 8px; }
         .frontend { background: #e3f2fd; border-color: #2196f3; }
         .backend { background: #e8f5e9; border-color: #4caf50; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2196f3; color: white; border: none; border-radius: 5px; }
+        .info { background: #f3e5f5; border-color: #9c27b0; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2196f3; color: white; border: none; border-radius: 5px; margin: 5px; }
         button:hover { background: #1976d2; }
         #resultado { margin-top: 20px; padding: 15px; background: #fff3e0; border-radius: 5px; }
         h1 { text-align: center; }
+        .url { font-size: 12px; color: #666; word-break: break-all; }
     </style>
 </head>
 <body>
-    <h1>Demo: Comunicación entre Contenedores</h1>
+    <h1>Demo: Comunicacion entre Contenedores Docker</h1>
     
+    <div class="contenedor info">
+        <h2>Arquitectura</h2>
+        <p><strong>Frontend (Nginx)</strong> sirve HTML/CSS/JS en puerto 80</p>
+        <p><strong>Backend (Flask)</strong> maneja la API en puerto 5000</p>
+        <p>Nginx proxea las llamadas a <code>/api/*</code> hacia el contenedor backend</p>
+    </div>
+
     <div class="contenedor frontend">
         <h2>CONTENEDOR 1: Frontend (Nginx)</h2>
-        <p>Puerto: 80 | Sirve las páginas HTML/CSS/JS</p>
-        <p><strong>Este HTML está siendo servido por este contenedor</strong></p>
+        <p>Puerto: 80 | Sirve las paginas HTML/CSS/JS</p>
+        <p class="url" id="frontendUrl"></p>
+        <p><strong>Este HTML esta siendo servido por este contenedor</strong></p>
     </div>
     
     <div class="contenedor backend">
         <h2>CONTENEDOR 2: Backend (Flask)</h2>
         <p>Puerto: 5000 | Maneja la API y base de datos</p>
+        <p class="url" id="backendUrl"></p>
         <p><strong>Haz clic para pedir datos al otro contenedor:</strong></p>
-        <button onclick="consultarBackend()">Consultar Backend</button>
+        <button onclick="consultarLocal()">Local (Docker)</button>
+        <button onclick="consultarRemoto()">Remoto (Render)</button>
     </div>
     
     <div id="resultado">
         <h3>Respuesta del Backend:</h3>
-        <p><em>Haz clic en el botón...</em></p>
+        <p><em>Haz clic en un boton...</em></p>
     </div>
 
     <script>
-        async function consultarBackend() {
-            document.getElementById('resultado').innerHTML = '<h3>Respuesta del Backend:</h3><p>Conectando...</p>';
+        const LOCAL_API = '/api/status';
+        const RENDER_API = 'https://automarket-backend.onrender.com/api/status';
+
+        document.getElementById('frontendUrl').textContent = 'URL: ' + window.location.origin;
+        document.getElementById('backendUrl').textContent = 'URL: ' + RENDER_API;
+
+        async function consultarLocal() {
+            document.getElementById('resultado').innerHTML = '<h3>Respuesta del Backend:</h3><p>Conectando a local...</p>';
             try {
-                const res = await fetch('https://herramientas-de-desarrollo-practica.onrender.com/api/status');
+                const res = await fetch(LOCAL_API);
                 const data = await res.json();
-                document.getElementById('resultado').innerHTML = `
-                    <h3>Respuesta del Backend:</h3>
-                    <p><strong>Mensaje:</strong> ${data.mensaje}</p>
-                    <p><strong>Contenedor:</strong> ${data.contenedor}</p>
-                    <p><strong>Puerto:</strong> ${data.puerto}</p>
-                    <p><strong>Estado:</strong> ${data.estado}</p>
-                `;
+                mostrarResultado(data, 'Local (Docker)');
             } catch (e) {
-                document.getElementById('resultado').innerHTML = '<h3>Error:</h3><p>No se pudo conectar al backend</p>';
+                document.getElementById('resultado').innerHTML = '<h3>Error Local:</h3><p>No se pudo conectar. Asegurate de que Docker esta corriendo: <code>docker-compose up -d</code></p>';
             }
+        }
+
+        async function consultarRemoto() {
+            document.getElementById('resultado').innerHTML = '<h3>Respuesta del Backend:</h3><p>Conectando a Render...</p>';
+            try {
+                const res = await fetch(RENDER_API);
+                const data = await res.json();
+                mostrarResultado(data, 'Remoto (Render)');
+            } catch (e) {
+                document.getElementById('resultado').innerHTML = '<h3>Error Remoto:</h3><p>No se pudo conectar a Render. Verifica que el backend este desplegado.</p>';
+            }
+        }
+
+        function mostrarResultado(data, origen) {
+            document.getElementById('resultado').innerHTML = `
+                <h3>Respuesta del Backend (${origen}):</h3>
+                <p><strong>Mensaje:</strong> ${data.mensaje}</p>
+                <p><strong>Contenedor:</strong> ${data.contenedor}</p>
+                <p><strong>Puerto:</strong> ${data.puerto}</p>
+                <p><strong>Estado:</strong> ${data.estado}</p>
+            `;
         }
     </script>
 </body>
