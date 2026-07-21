@@ -1,14 +1,14 @@
 # Estadísticas del Proyecto - AutoMarket Perú
 
-**Generado:** 2026-07-20 03:17:06
+**Generado:** 2026-07-21 02:05:16
 
 ---
 
 ## Resumen
 
-- Total de archivos: **24**
-- Total de líneas de código: **39092**
-- Archivos HTML: **17**
+- Total de archivos: **25**
+- Total de líneas de código: **39186**
+- Archivos HTML: **18**
 - Archivos CSS: **7**
 - Autos listados: **8**
 
@@ -34,11 +34,12 @@
 | Login-register/login.html | 60 |
 | Login-register/register.css | 107 |
 | Login-register/register.html | 61 |
+| contenedores.html | 90 |
 | footer.css | 44 |
 | incidentes.css | 460 |
 | incidentes.html | 281 |
-| index.html | 132 |
+| index.html | 131 |
 | lighthouse-report.html | 2895 |
 | main/daniel.css | 81 |
-| navbar/navbar.css | 109 |
+| navbar/navbar.css | 114 |
 | styles.css | 25 |
